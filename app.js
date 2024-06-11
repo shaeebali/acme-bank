@@ -3,6 +3,8 @@ const express = require("express");
 const session = require("express-session");
 const path = require("path");
 const fs = require("fs");
+//require helmet to secure cookies:
+const helmet = require("helmet");
 
 const db = new sqlite3.Database("./bank_sample.db");
 
@@ -10,12 +12,19 @@ const app = express();
 const PORT = 3000;
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
+//initialize and use helmet:
+app.use(helmet());
 
+//initialize and use sessions & add cookie security:
 app.use(
   session({
     secret: "secret",
     resave: true,
     saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      secure: true,
+    },
   })
 );
 
