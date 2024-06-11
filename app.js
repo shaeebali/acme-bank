@@ -173,7 +173,7 @@ app.get("/public_forum", function (request, response) {
   //response.end();
 });
 
-app.post("/public_forum", function (request, response) {
+app.post("/public_forum", [ check('comment').isString() ], function (request, response) {
   if (request.session.loggedin) {
     var comment = request.body.comment;
     var username = request.session.username;
