@@ -5,6 +5,8 @@ const path = require("path");
 const fs = require("fs");
 //require helmet to secure cookies:
 const helmet = require("helmet");
+//require express-validator package:
+const { check } = require("express-validator");
 
 const db = new sqlite3.Database("./bank_sample.db");
 
