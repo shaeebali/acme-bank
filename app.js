@@ -146,6 +146,8 @@ app.post("/download", function (request, response) {
 
     // Change the filePath to current working directory using the "path" method
     const filePath = "history_files/" + file_name;
+    const root_directory = path.join(process.cwd(), "/history_files/", file_name)
+    const root_dir = "history_files\\"
     console.log(filePath);
     try {
       content = fs.readFileSync(filePath, "utf8");
@@ -180,7 +182,7 @@ app.post("/public_forum", [ check('comment').isString() ], function (request, re
     var username = request.session.username;
     if (comment) {
       db.all(
-        `INSERT INTO public_forum (username,message) VALUES (comment = $comment, username = $username)`, 
+        `INSERT INTO public_forum (username,message) VALUES (username = $username, comment = $comment)`, 
         {
           $comment: comment,
           $username: username
@@ -212,7 +214,7 @@ app.post("/public_forum", [ check('comment').isString() ], function (request, re
 //SQL UNION INJECTION
 app.get("/public_ledger", function (request, response) {
   if (request.session.loggedin) {
-    var id = request.query.id;
+    var id = parseInt(request.query.id);
     if (id) {
       db.all(
         `SELECT * FROM public_ledger WHERE from_account = ?`, [id],
