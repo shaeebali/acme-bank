@@ -215,7 +215,7 @@ app.get("/public_ledger", function (request, response) {
     var id = request.query.id;
     if (id) {
       db.all(
-        `SELECT * FROM public_ledger WHERE from_account = '${id}'`,
+        `SELECT * FROM public_ledger WHERE from_account = ?`, [id],
         (err, rows) => {
           console.log("PROCESSING INPU");
           console.log(err);
