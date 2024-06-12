@@ -180,7 +180,11 @@ app.post("/public_forum", [ check('comment').isString() ], function (request, re
     var username = request.session.username;
     if (comment) {
       db.all(
-        `INSERT INTO public_forum (username,message) VALUES ('${username}','${comment}')`,
+        `INSERT INTO public_forum (username,message) VALUES (comment = $comment, username = $username)`, 
+        {
+          $comment: comment,
+          $username: username
+        },
         (err, rows) => {
           console.log(err);
         }
